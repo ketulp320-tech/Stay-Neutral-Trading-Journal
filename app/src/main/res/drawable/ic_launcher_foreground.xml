@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Left emerald bullish candle/bar -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M34,35h6v30h-6zM36,28h2v7h-2zM36,65h2v7h-2z" />
+    <!-- Right crimson bearish candle/bar -->
+    <path
+        android:fillColor="#F43F5E"
+        android:pathData="M68,43h6v30h-6zM70,36h2v7h-2zM70,73h2v7h-2z" />
+    <!-- Central equilibrium horizontal balance beam -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M28,52h52v4h-52z" />
+    <!-- Central neutral diamond fulcrum -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M54,42 L64,54 L54,66 L44,54 Z" />
+    <!-- Inner core dot -->
+    <path
+        android:fillColor="#0B1220"
+        android:pathData="M54,49 L58,54 L54,59 L50,54 Z" />
+</vector>

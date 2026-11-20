@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Stay Neutral</string>
+    <string name="app_tagline">Disciplined Trading Checklist &amp; P&amp;L</string>
+
+    <!-- Navigation -->
+    <string name="nav_sheet">Checklist</string>
+    <string name="nav_charts">P&amp;L Charts</string>
+    <string name="nav_analysis">Analysis</string>
+
+    <!-- Table Headers (exact columns from checklist schema) -->
+    <string name="col_date">Date</string>
+    <string name="col_time">Time</string>
+    <string name="col_fii">FII</string>
+    <string name="col_global">Global</string>
+    <string name="col_pcr">PCR</string>
+    <string name="col_oi_high">OI High</string>
+    <string name="col_ema_signal">EMA Signal</string>
+    <string name="col_zone">Zone</string>
+    <string name="col_result">Result (₹)</string>
+
+    <!-- Actions -->
+    <string name="action_log_trade">Log Trade</string>
+    <string name="action_add_row">Add Entry</string>
+    <string name="action_save_entry">Save Entry</string>
+    <string name="action_update_entry">Update Entry</string>
+    <string name="action_delete_entry">Delete Entry</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_today">Today</string>
+    <string name="action_all_days">All Days</string>
+    <string name="action_day_view">By Day</string>
+    <string name="action_pick_date">Select Date</string>
+    <string name="action_pick_time">Pick Time</string>
+    <string name="action_now">Now</string>
+    <string name="action_prev_day">Previous Day</string>
+    <string name="action_next_day">Next Day</string>
+    <string name="action_prev_period">Previous Period</string>
+    <string name="action_next_period">Next Period</string>
+
+    <!-- Signals -->
+    <string name="signal_bullish">Bullish</string>
+    <string name="signal_neutral">Neutral</string>
+    <string name="signal_bearish">Bearish</string>
+    <string name="oi_put_high">Put High</string>
+    <string name="oi_balanced">Balanced</string>
+    <string name="oi_call_high">Call High</string>
+    <string name="zone_demand">Demand</string>
+    <string name="zone_mid">Mid Zone</string>
+    <string name="zone_supply">Supply</string>
+
+    <!-- Result Types -->
+    <string name="result_profit">Profit (+₹)</string>
+    <string name="result_breakeven">Flat (₹0)</string>
+    <string name="result_loss">Loss (−₹)</string>
+    <string name="result_amount_label">Profit / Loss Amount (INR ₹)</string>
+    <string name="result_amount_hint">0.00</string>
+    <string name="time_manual_hint">Enter time manually (24h HH:MM)</string>
+
+    <!-- Entry Sheet -->
+    <string name="sheet_title_new">New Trade Checklist</string>
+    <string name="sheet_title_edit">Edit Trade Entry</string>
+    <string name="section_schedule">Day &amp; Execution Time</string>
+    <string name="section_checklist">6-Factor Market Checklist</string>
+    <string name="section_outcome">Trade Result</string>
+    <string name="delete_confirm_title">Delete this trade entry?</string>
+    <string name="delete_confirm_message">This removes the logged row from local storage and recalculates your P&amp;L and analytics.</string>
+
+    <!-- Empty States -->
+    <string name="empty_day_title">No trades logged for this day</string>
+    <string name="empty_day_subtitle">Complete the 6-factor checklist (FII, Global, PCR, OI High, EMA Signal, Zone) and log your result to build your edge.</string>
+    <string name="empty_all_title">Your Stay Neutral ledger is empty</string>
+    <string name="empty_all_subtitle">Start logging day-wise trades using only your checklist parameters. All entries stay stored locally on your device.</string>
+    <string name="empty_charts_title">No P&amp;L data yet</string>
+    <string name="empty_charts_subtitle">Log your first trade entry to unlock interactive daily and monthly profit/loss charts and your equity curve.</string>
+    <string name="empty_analysis_title">Waiting for trade data</string>
+    <string name="empty_analysis_subtitle">Once you log trades, Stay Neutral will analyze win rates, confluence alignment, factor edge, and best trading hours strictly from your inputs.</string>
+
+    <!-- Charts -->
+    <string name="tab_daily">Daily</string>
+    <string name="tab_monthly">Monthly</string>
+    <string name="chart_daily_pnl_title">Daily Profit / Loss</string>
+    <string name="chart_monthly_pnl_title">Monthly Profit / Loss</string>
+    <string name="chart_equity_curve_title">Cumulative Equity Curve</string>
+    <string name="chart_calendar_title">Daily P&amp;L Calendar</string>
+
+    <!-- Analysis -->
+    <string name="analysis_scorecard">Performance Scorecard</string>
+    <string name="analysis_confluence">Confluence Alignment Edge</string>
+    <string name="analysis_factors">Factor-by-Factor Breakdown</string>
+    <string name="analysis_time_sessions">Session Time Performance</string>
+    <string name="analysis_weekday">Day-of-Week Edge</string>
+    <string name="analysis_takeaways">Data-Driven Takeaways</string>
+</resources>

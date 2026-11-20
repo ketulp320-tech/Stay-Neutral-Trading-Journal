@@ -1,0 +1,6 @@
+{
+  "name": "Stay Neutral",
+  "description": "Day-wise trading checklist, local trade log, factor analytics, and daily & monthly P&L visualizations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
