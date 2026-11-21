@@ -8,6 +8,7 @@ data class TradeEntryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val dateIso: String, // yyyy-MM-dd
     val timeHm: String,  // HH:mm
+    val tradeName: String = TradeInstrument.NIFTY.name,
     val fii: String,
     val global: String,
     val pcr: String,
@@ -15,5 +16,6 @@ data class TradeEntryEntity(
     val emaSignal: String,
     val zone: String,
     val resultAmount: Double,
+    val remark: String = "",
     val createdAt: Long = System.currentTimeMillis(),
 )

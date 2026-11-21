@@ -47,6 +47,7 @@ import com.example.domain.FactorBreakdown
 import com.example.domain.InsightSentiment
 import com.example.domain.OverallStats
 import com.example.domain.SessionStat
+import com.example.domain.TradeNameStat
 import com.example.domain.WeekdayStat
 import com.example.ui.StayNeutralUiState
 import com.example.ui.components.biasAccentColor
@@ -152,6 +153,11 @@ fun AnalysisScreen(
                 item(key = "takeaways") {
                     InsightsSection(insights = report.insights)
                 }
+            }
+
+            // 2b. Trade Name Performance (Nifty / Sensex / Stock)
+            item(key = "trade_name_performance") {
+                TradeNamePerformanceCard(stats = report.tradeNameStats)
             }
 
             // 3. Confluence Alignment Edge
@@ -684,6 +690,75 @@ private fun WeekdayPerformanceCard(weekdays: List<WeekdayStat>) {
                         textAlign = TextAlign.End,
                         modifier = Modifier.width(66.dp),
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TradeNamePerformanceCard(stats: List<TradeNameStat>) {
+    val tradingColors = LocalTradingColors.current
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = tradingColors.cardElevated,
+        border = BorderStroke(1.dp, tradingColors.tableGridBorder),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.analysis_trade_name),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            stats.forEachIndexed { idx, stat ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier.width(80.dp),
+                    ) {
+                        Text(
+                            text = stat.instrument.displayName,
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                        )
+                    }
+
+                    Text(
+                        text = if (stat.count == 0) {
+                            "0 trades"
+                        } else {
+                            "${stat.count} tr • ${formatPercent(stat.winRatePct)} (${stat.wins}W/${stat.losses}L)"
+                        },
+                        style = MonoTextStyles.tableCaption,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(1f),
+                    )
+
+                    Text(
+                        text = if (stat.count == 0) "—" else formatSignedPnl(stat.netPnl),
+                        style = MonoTextStyles.tableValue.copy(fontWeight = FontWeight.Bold),
+                        color = if (stat.count == 0) MaterialTheme.colorScheme.onSurfaceVariant else pnlColor(stat.netPnl),
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.width(92.dp),
+                    )
+                }
+                if (idx != stats.lastIndex) {
+                    HorizontalDivider(color = tradingColors.tableGridBorder.copy(alpha = 0.55f))
                 }
             }
         }

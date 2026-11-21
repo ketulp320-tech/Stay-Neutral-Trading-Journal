@@ -3,6 +3,7 @@ package com.example.domain
 import com.example.data.AlignmentTier
 import com.example.data.ChecklistFactor
 import com.example.data.SignalBias
+import com.example.data.TradeInstrument
 import kotlin.math.abs
 
 data class OverallStats(
@@ -111,8 +112,18 @@ data class DataInsight(
     val sentiment: InsightSentiment,
 )
 
+data class TradeNameStat(
+    val instrument: TradeInstrument,
+    val count: Int,
+    val wins: Int,
+    val losses: Int,
+    val winRatePct: Double,
+    val netPnl: Double,
+)
+
 data class FullAnalyticsReport(
     val overall: OverallStats,
+    val tradeNameStats: List<TradeNameStat>,
     val confluenceTiers: List<ConfluenceTierStat>,
     val factorBreakdowns: List<FactorBreakdown>,
     val sessionStats: List<SessionStat>,
@@ -129,6 +140,7 @@ object TradeAnalyticsEngine {
                 .thenBy { it.id },
         )
         val overall = computeOverallStats(chronological)
+        val tradeNames = computeTradeNameStats(chronological)
         val confluence = computeConfluenceStats(chronological)
         val factors = computeFactorBreakdowns(chronological)
         val sessions = computeSessionStats(chronological)
@@ -137,12 +149,30 @@ object TradeAnalyticsEngine {
 
         return FullAnalyticsReport(
             overall = overall,
+            tradeNameStats = tradeNames,
             confluenceTiers = confluence,
             factorBreakdowns = factors,
             sessionStats = sessions,
             weekdayStats = weekdays,
             insights = insights,
         )
+    }
+
+    private fun computeTradeNameStats(trades: List<TradeEntry>): List<TradeNameStat> {
+        return TradeInstrument.entries.map { instrument ->
+            val group = trades.filter { it.tradeName == instrument }
+            val wins = group.count { it.isWin }
+            val losses = group.count { it.isLoss }
+            val decided = wins + losses
+            TradeNameStat(
+                instrument = instrument,
+                count = group.size,
+                wins = wins,
+                losses = losses,
+                winRatePct = if (decided > 0) (wins * 100.0) / decided else 0.0,
+                netPnl = group.sumOf { it.resultAmount },
+            )
+        }
     }
 
     fun computeDailySeriesForMonth(

@@ -81,13 +81,15 @@ import com.example.ui.theme.MonoTextStyles
 // Fixed column widths so header, data rows, and subtotal footer stay 100% grid-aligned
 private val ColDateWidth = 88.dp
 private val ColTimeWidth = 66.dp
+private val ColTradeNameWidth = 96.dp
 private val ColSignalWidth = 84.dp
 private val ColOiWidth = 92.dp
 private val ColEmaWidth = 92.dp
 private val ColZoneWidth = 88.dp
 private val ColResultWidth = 116.dp
+private val ColRemarkWidth = 156.dp
 private val TotalTableWidth: Dp =
-    ColDateWidth + ColTimeWidth + ColSignalWidth * 3 + ColOiWidth + ColEmaWidth + ColZoneWidth + ColResultWidth
+    ColDateWidth + ColTimeWidth + ColTradeNameWidth + ColSignalWidth * 3 + ColOiWidth + ColEmaWidth + ColZoneWidth + ColResultWidth + ColRemarkWidth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -664,6 +666,7 @@ private fun ChecklistTableHeaderRow() {
     ) {
         HeaderCell(text = stringResource(R.string.col_date), width = ColDateWidth, align = TextAlign.Start)
         HeaderCell(text = stringResource(R.string.col_time), width = ColTimeWidth, align = TextAlign.Center)
+        HeaderCell(text = stringResource(R.string.col_trade_name), width = ColTradeNameWidth, align = TextAlign.Center)
         HeaderCell(text = stringResource(R.string.col_fii), width = ColSignalWidth, align = TextAlign.Center)
         HeaderCell(text = stringResource(R.string.col_global), width = ColSignalWidth, align = TextAlign.Center)
         HeaderCell(text = stringResource(R.string.col_pcr), width = ColSignalWidth, align = TextAlign.Center)
@@ -671,6 +674,7 @@ private fun ChecklistTableHeaderRow() {
         HeaderCell(text = stringResource(R.string.col_ema_signal), width = ColEmaWidth, align = TextAlign.Center)
         HeaderCell(text = stringResource(R.string.col_zone), width = ColZoneWidth, align = TextAlign.Center)
         HeaderCell(text = stringResource(R.string.col_result), width = ColResultWidth, align = TextAlign.End)
+        HeaderCell(text = stringResource(R.string.col_remark), width = ColRemarkWidth, align = TextAlign.Start)
     }
     HorizontalDivider(color = tradingColors.tableGridBorder)
 }
@@ -787,6 +791,28 @@ private fun ChecklistDataRow(
                 .padding(horizontal = 6.dp),
         )
 
+        // Trade Name
+        Box(
+            modifier = Modifier
+                .width(ColTradeNameWidth)
+                .padding(horizontal = 4.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Surface(
+                shape = RoundedCornerShape(6.dp),
+                color = MaterialTheme.colorScheme.primaryContainer,
+            ) {
+                Text(
+                    text = trade.tradeName.displayName,
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                )
+            }
+        }
+
         // FII
         SignalTableCell(
             bias = trade.fii,
@@ -843,6 +869,22 @@ private fun ChecklistDataRow(
                 maxLines = 1,
             )
         }
+
+        // Remark
+        Text(
+            text = trade.remark.ifBlank { "—" },
+            style = MaterialTheme.typography.bodySmall,
+            color = if (trade.remark.isBlank()) {
+                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .width(ColRemarkWidth)
+                .padding(horizontal = 8.dp),
+        )
     }
     HorizontalDivider(color = tradingColors.tableGridBorder.copy(alpha = 0.65f))
 }

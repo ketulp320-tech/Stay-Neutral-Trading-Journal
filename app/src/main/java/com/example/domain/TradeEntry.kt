@@ -4,12 +4,14 @@ import com.example.data.ChecklistFactor
 import com.example.data.ConfluenceSummary
 import com.example.data.SignalBias
 import com.example.data.TradeEntryEntity
+import com.example.data.TradeInstrument
 import com.example.data.evaluateConfluence
 
 data class TradeEntry(
     val id: Long = 0,
     val dateIso: String,
     val timeHm: String,
+    val tradeName: TradeInstrument = TradeInstrument.NIFTY,
     val fii: SignalBias,
     val global: SignalBias,
     val pcr: SignalBias,
@@ -17,6 +19,7 @@ data class TradeEntry(
     val emaSignal: SignalBias,
     val zone: SignalBias,
     val resultAmount: Double,
+    val remark: String = "",
     val createdAt: Long = System.currentTimeMillis(),
 ) {
     val confluence: ConfluenceSummary
@@ -42,6 +45,7 @@ data class TradeEntry(
         id = id,
         dateIso = dateIso,
         timeHm = timeHm,
+        tradeName = tradeName.name,
         fii = fii.name,
         global = global.name,
         pcr = pcr.name,
@@ -49,6 +53,7 @@ data class TradeEntry(
         emaSignal = emaSignal.name,
         zone = zone.name,
         resultAmount = resultAmount,
+        remark = remark,
         createdAt = createdAt,
     )
 }
@@ -57,6 +62,7 @@ fun TradeEntryEntity.toDomain(): TradeEntry = TradeEntry(
     id = id,
     dateIso = dateIso,
     timeHm = timeHm,
+    tradeName = TradeInstrument.fromStored(tradeName),
     fii = SignalBias.fromStored(fii),
     global = SignalBias.fromStored(global),
     pcr = SignalBias.fromStored(pcr),
@@ -64,5 +70,6 @@ fun TradeEntryEntity.toDomain(): TradeEntry = TradeEntry(
     emaSignal = SignalBias.fromStored(emaSignal),
     zone = SignalBias.fromStored(zone),
     resultAmount = resultAmount,
+    remark = remark,
     createdAt = createdAt,
 )

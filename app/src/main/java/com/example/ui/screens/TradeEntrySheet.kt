@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import com.example.R
 import com.example.data.ChecklistFactor
 import com.example.data.SignalBias
+import com.example.data.TradeInstrument
 import com.example.data.evaluateConfluence
 import com.example.domain.DateTimeUtils
 import com.example.domain.TradeEntry
@@ -102,6 +103,7 @@ fun TradeEntrySheet(
     }
     var timeError by remember { mutableStateOf<String?>(null) }
 
+    var tradeName by remember(existing) { mutableStateOf(existing?.tradeName ?: TradeInstrument.NIFTY) }
     var fii by remember(existing) { mutableStateOf(existing?.fii ?: SignalBias.NEUTRAL) }
     var global by remember(existing) { mutableStateOf(existing?.global ?: SignalBias.NEUTRAL) }
     var pcr by remember(existing) { mutableStateOf(existing?.pcr ?: SignalBias.NEUTRAL) }
@@ -128,6 +130,9 @@ fun TradeEntrySheet(
                 if (absVal % 1.0 == 0.0) absVal.toLong().toString() else absVal.toString()
             },
         )
+    }
+    var remarkText by remember(existing) {
+        mutableStateOf(existing?.remark ?: "")
     }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -255,7 +260,7 @@ fun TradeEntrySheet(
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
-                        text = "Date • Manual Time • 6 Checklist Factors • Result (INR ₹)",
+                        text = "Date • Time • Trade Name • 6 Factors • Result (₹) • Remark",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -414,6 +419,70 @@ fun TradeEntrySheet(
                             style = MaterialTheme.typography.bodySmall,
                             color = tradingColors.loss,
                         )
+                    }
+                }
+            }
+
+            // Trade Name Selector (Nifty / Sensex / Stock)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.col_trade_name).uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    TradeInstrument.entries.forEach { instrument ->
+                        val isSelected = tradeName == instrument
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = if (isSelected) {
+                                MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainerLow
+                            },
+                            border = BorderStroke(
+                                width = if (isSelected) 1.5.dp else 1.dp,
+                                color = if (isSelected) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.outlineVariant
+                                },
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(46.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable { tradeName = instrument }
+                                .testTag("trade_name_${instrument.name.lowercase()}"),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                            ) {
+                                Text(
+                                    text = instrument.displayName,
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    ),
+                                    color = if (isSelected) {
+                                        MaterialTheme.colorScheme.onPrimaryContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -580,6 +649,20 @@ fun TradeEntrySheet(
                 )
             }
 
+            // 5. Remark Input
+            OutlinedTextField(
+                value = remarkText,
+                onValueChange = { remarkText = it },
+                label = { Text(stringResource(R.string.remark_label)) },
+                placeholder = { Text(stringResource(R.string.remark_hint)) },
+                minLines = 1,
+                maxLines = 3,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("remark_input"),
+            )
+
             // Action Buttons
             Row(
                 modifier = Modifier
@@ -618,6 +701,7 @@ fun TradeEntrySheet(
                                 id = existing?.id ?: 0L,
                                 dateIso = dateIso,
                                 timeHm = formattedTime,
+                                tradeName = tradeName,
                                 fii = fii,
                                 global = global,
                                 pcr = pcr,
@@ -625,6 +709,7 @@ fun TradeEntrySheet(
                                 emaSignal = emaSignal,
                                 zone = zone,
                                 resultAmount = signedResult,
+                                remark = remarkText.trim(),
                                 createdAt = existing?.createdAt ?: System.currentTimeMillis(),
                             ),
                         )

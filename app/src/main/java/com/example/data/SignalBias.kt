@@ -11,6 +11,19 @@ enum class SignalBias(val shortCode: String, val defaultLabel: String) {
     }
 }
 
+enum class TradeInstrument(val displayName: String) {
+    NIFTY("Nifty"),
+    SENSEX("Sensex"),
+    STOCK("Stock");
+
+    companion object {
+        fun fromStored(value: String): TradeInstrument =
+            entries.firstOrNull {
+                it.name.equals(value, ignoreCase = true) || it.displayName.equals(value, ignoreCase = true)
+            } ?: NIFTY
+    }
+}
+
 enum class ChecklistFactor(
     val columnTitle: String,
     val fullTitle: String,
@@ -57,7 +70,7 @@ enum class ChecklistFactor(
         columnTitle = "Zone",
         fullTitle = "Price Zone",
         bullishLabel = "Demand",
-        neutralLabel = "Mid Zone",
+        neutralLabel = "VWAP",
         bearishLabel = "Supply",
     );
 
